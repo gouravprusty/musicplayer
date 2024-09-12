@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music player</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="media/favicon.png" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/7526f748ec.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="music_player">
+            <nav>
+                <div class="circle">
+                    <i class="fa-solid fa-angle-left"></i>
+                </div>
+                <div class="circle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </nav>
+            <img src="media/thumbnail.jpg" alt="thumbnail" class="thumbnail">
+            <h1>Espresso</h1>
+            <p>Sabrina Carpenter</p>
+            <audio id="song">
+                <source src="media/Espresso.mp3" type="audio/mpeg">
+            </audio>
+            <input type="range" value="0" id="progress">
+            <div class="controls">
+                <div><i class="fa-solid fa-backward"></i></div>
+                <div onclick="playPause()"><i class="fa-solid fa-play" id="ctrlIcn"></i></div>
+                <div><i class="fa-solid fa-forward"></i></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    let progress = document.querySelector("#progress");
+    let song = document.querySelector("#song");
+    let ctrlIcn = document.querySelector("#ctrlIcn");
+    let thumbnail = document.querySelector(".thumbnail");
+    song.onloadedmetadata = function(){
+        progress.max = song.duration;
+        progress.value = song.currentTime;
+    };
+    function playPause(){
+        if(ctrlIcn.classList.contains("fa-pause")){
+            song.pause();
+            ctrlIcn.classList.remove("fa-pause");
+            ctrlIcn.classList.add("fa-play");
+            thumbnail.style.animationPlayState = "paused";
+        }else{
+            song.play();
+            ctrlIcn.classList.remove("fa-play");
+            ctrlIcn.classList.add("fa-pause");
+            thumbnail.style.animationPlayState = "running";
+        }
+    };
+    if(song.play()){
+        setInterval(() => {
+            progress.value = song.currentTime;
+        }, 500);
+    };
+    progress.onchange = function(){
+        song.play();
+        song.currentTime = progress.value;
+        ctrlIcn.classList.add("fa-pause");
+        ctrlIcn.classList.remove("fa-play");
+        thumbnail.style.animationPlayState = "running";
+    };
+</script>
+</body>
+</html>
